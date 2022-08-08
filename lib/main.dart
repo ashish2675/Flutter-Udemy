@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './question.dart';
-import 'answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -17,34 +17,52 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _questions = [
+    {
+      'questionText': 'Whats\'s your favorite color?',
+      'answers': ['Red', 'Blue', 'Orange', 'Purple'],
+    },
+    {
+      'questionText': 'What\'s your favorite animal?',
+      'answers': ['Bear', 'Raindear', 'Horse', 'Cat'],
+    },
+    {
+      'questionText': 'Who\'s your favorite instructor?',
+      'answers': ['Akhand', 'Chaman', 'Suman', 'Aman'],
+    },
+  ];
   var _questionIndex = 0;
 
   void _answerQuestion() {
+    // var aBool = true;
+    // aBool = false;
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
     print(_questionIndex);
+    if (_questionIndex < _questions.length) {
+      print('We have more questions');
+    } else {
+      print('No more questions!');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      'Whats\'s your favorite color?',
-      'What\'s your favorite animal?',
-    ];
+    // questions = []; // does not work if question is a const
+
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
         title: Text('My First App'),
       ),
-      body: Column(children: [
-        Question(
-          questions[_questionIndex],
-        ),
-        Answer(_answerQuestion),
-        Answer(_answerQuestion),
-        Answer(_answerQuestion),
-      ]),
+      body: _questionIndex < _questions.length
+          ? Quiz(
+              answerQuestion: _answerQuestion,
+              questionIndex: _questionIndex,
+              questions: _questions,
+            )
+          : Result(),
     ));
   }
 }
